@@ -35,6 +35,9 @@ def check_mst(adj_mat: np.ndarray,
             total += mst[i, j]
     assert approx_equal(total, expected_weight), 'Proposed MST has incorrect expected weight'
 
+    # check that the number of edges is equal to the number of nodes minus one; the number of edges should be the number of nonzero elements in the matrix divided by two (since it is symmetric)
+    assert (np.count_nonzero(mst)/2)==(mst.shape[0]-1)
+
 
 def test_mst_small():
     """

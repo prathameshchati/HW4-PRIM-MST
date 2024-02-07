@@ -83,6 +83,10 @@ class Graph:
 
         self.mst=np.array(mst)
 
+    # the number of edges should be the number of nonzero elements in the matrix divided by two (since it is symmetric)
+    def get_mst_number_of_edges(self):
+        return np.count_nonzero(self.mst)/2
+
 # g=Graph("data/small.csv")
 # g.adj_mat
 
@@ -167,3 +171,4 @@ class Graph:
 # for i in range(mst.shape[0]):
 #     for j in range(i+1):
 #         print(i,j)
+    
