@@ -38,6 +38,10 @@ def check_mst(adj_mat: np.ndarray,
     # check that the number of edges is equal to the number of nodes minus one; the number of edges should be the number of nonzero elements in the matrix divided by two (since it is symmetric)
     assert (np.count_nonzero(mst)/2)==(mst.shape[0]-1)
 
+    # check that the number of nodes in the adjacency matrix is equal to the number of nodes in the mst (we can add one to the number of nonzero edges)
+    # this is to check if the adjacency matrix is fully connected, if it isn't, it is a forest instead of a mst
+    assert(((np.count_nonzero(mst)/2)+1)==adj_mat.shape[0])
+
 
 def test_mst_small():
     """
@@ -74,4 +78,22 @@ def test_mst_student():
     TODO: Write at least one unit test for MST construction.
     
     """
-    pass
+    # check that an error is raised when we provide an unsymmetric/directed network
+    with pytest.raises(TypeError) as g:
+        file_path = './data/small_directed.csv' # created from small.csv
+        Graph(file_path)
+    assert g.type==TypeError
+
+    # check that an error is raised when we provide a uniform adjacency matrix
+    with pytest.raises(TypeError) as g:
+        file_path = './data/small_uniform_weights.csv' # created from small.csv
+        Graph(file_path)
+    assert g.type==TypeError
+
+    # check that our output mst adjacency matrix is symmetric (undirected output)
+    file_path = './data/small.csv'
+    g = Graph(file_path)
+    g.construct_mst()
+    assert np.allclose(g.mst, g.mst.T)
+
+    # pass
